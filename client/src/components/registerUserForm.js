@@ -1,7 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { format } from "date-fns";
 import { constants, BASEURL } from "../constants";
+import { useForm } from "react-hook-form";
 
 const RegisterUserForm = () => {
   // Create an initial state for the form data
@@ -12,58 +13,61 @@ const RegisterUserForm = () => {
     confirmPassword: "",
   };
 
-  const [form, setForm] = useState(INITIAL_STATE);
+  // Dependencies for form
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm(INITIAL_STATE);
 
-  const handleChange = (event) => {
-    setForm({
-      ...form,
-      [event.target.id]: event.target.value,
-    });
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    // Data validation
-    
+  const submittedFormData = async (data) => {
+    console.log(data);
     try {
       // Post data to DB
-      const data = await axios.post(`${BASEURL}/register`, form);
-      console.log(data);
-      // reset form
-      setForm(INITIAL_STATE);
+      await axios.post(`${BASEURL}/register`, data);
     } catch (err) {
-      console.error(err.message)
+      console.error(err.message);
     }
   };
+
+  // Reset input fields if forms has been submitted
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset();
+    }
+  }, [formState, reset]);
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit((data) => {
+        submittedFormData(data);
+      })}
+    >
       <div>
         <label htmlFor="username">Username</label>
-        <input
-          id="username"
-          type="text"
-          value={form.username}
-          onChange={handleChange}
-        ></input>
+        <input {...register("username", { required: "This is required" })} />
+        <p>{errors.username?.message}</p>
       </div>
       <div>
         <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          value={form.password}
-          onChange={handleChange}
-        ></input>
+        <input {...register("password", { required: "This is required" })} />
+        <p>{errors.password?.message}</p>
       </div>
       <div>
         <label htmlFor="confirmPassword">Confirm Password</label>
         <input
-          id="confirmPassword"
-          type="password"
-          value={form.confirmPassword}
-          onChange={handleChange}
-        ></input>
+          {...register("confirmPassword", {
+            required: "This is required",
+            validate: (val) => {
+              if (watch("password") !== val) {
+                return "Your passwords do not match.";
+              }
+            },
+          })}
+        />
+        <p>{errors.confirmPassword?.message}</p>
       </div>
       <button type="submit">Register</button>
     </form>
