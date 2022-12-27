@@ -28,6 +28,8 @@ const RegisterUserForm = () => {
     try {
       // Post data to DB
       await axios.post(`${BASEURL}/register`, data);
+
+      // Redirect to login page
     } catch (err) {
       console.error(err.message);
     }
@@ -39,6 +41,7 @@ const RegisterUserForm = () => {
       reset();
     }
   }, [formState, reset]);
+  
   return (
     <form
       onSubmit={handleSubmit((data) => {
