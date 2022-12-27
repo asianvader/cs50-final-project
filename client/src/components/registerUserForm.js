@@ -1,11 +1,18 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { format } from "date-fns";
+import { constants, BASEURL } from "../constants";
 
 const RegisterUserForm = () => {
-  const [form, setForm] = useState({
+  // Create an initial state for the form data
+  // Can be reused to reset form
+  const INITIAL_STATE = {
     username: "",
     password: "",
     confirmPassword: "",
-  });
+  };
+
+  const [form, setForm] = useState(INITIAL_STATE);
 
   const handleChange = (event) => {
     setForm({
@@ -14,9 +21,20 @@ const RegisterUserForm = () => {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    alert(form.username + " " + form.password);
+
+    // Data validation
+    
+    try {
+      // Post data to DB
+      const data = await axios.post(`${BASEURL}/register`, form);
+      console.log(data);
+      // reset form
+      setForm(INITIAL_STATE);
+    } catch (err) {
+      console.error(err.message)
+    }
   };
   return (
     <form onSubmit={handleSubmit}>
