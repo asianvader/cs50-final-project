@@ -44,6 +44,7 @@ def login():
     if len(result) != 1 or not check_password_hash(result[0]["hash"], password):
         response = {'message': "User doesn't exist or password isn't correct"}
         return jsonify(response)
+        # TODO Add error message
 
     else:
         access_token = create_access_token(identity=username)
@@ -51,6 +52,12 @@ def login():
         response = {"access_token":access_token}
         return jsonify(response)
 
+@app.route("/logout", methods=["POST"])
+def logout():
+    response = jsonify({"msg": "logout successful"})
+    unset_jwt_cookies(response)
+    print("logout")
+    return response
 
 @app.after_request
 def after_request(response):

@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 import { format } from "date-fns";
 import { constants, BASEURL } from "../constants";
 import { useForm } from "react-hook-form";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-const LoginForm = () => {
+const LoginForm = (props) => {
   const navigate = useNavigate();
   // Create an initial state for the form data
   // Can be reused to reset form
@@ -30,11 +30,12 @@ const LoginForm = () => {
       const result = await axios.post(`${BASEURL}/login`, data);
       console.log(result.data);
       // Username and password are correct
-      const message = result.data
-      console.log(Object.keys(message))
-      if (Object.keys(message)[0] === 'access_token') {
+      const message = result.data;
+      console.log(Object.keys(message));
+      if (Object.keys(message)[0] === "access_token") {
         console.log("success", result.data);
-        navigate("/welcome")
+        props.setToken(result.data.access_token);
+        navigate("/welcome");
       } else {
         console.log(result.data.message);
       }
