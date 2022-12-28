@@ -22,6 +22,27 @@ def register():
     return jsonify(response)
 
 
+@app.route('/login', methods=['POST'])
+def login():
+    print('LOGIN')
+    user_details = request.get_json()
+    username = user_details['username']
+    password = user_details['password']
+    print(username, password)
+
+    # Check db
+    result = baby_tracker_controller.check_user(username)
+    # Ensure username exists and password is correct
+    print(result)
+    if len(result) != 1 or not check_password_hash(result[0]["hash"], password):
+        response = {'message': "User doesn't exist or password isn't correct"}
+        return jsonify(response)
+
+    else:
+        response = {'message': username}
+        return jsonify(response)
+
+
 @app.after_request
 def after_request(response):
     # <- You can change "*" for a domain for example "http://localhost"
