@@ -42,7 +42,7 @@ def login():
     # Ensure username exists and password is correct
     print(result)
     if len(result) != 1 or not check_password_hash(result[0]["hash"], password):
-        response = {'message': "User doesn't exist or password isn't correct"}
+        response = {'message': "User doesn't exist or password isn't correct. Please try again."}
         return jsonify(response)
         # TODO Add error message
 

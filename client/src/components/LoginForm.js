@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { constants, BASEURL } from "../constants";
 import { useForm } from "react-hook-form";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const LoginForm = (props) => {
   const navigate = useNavigate();
+  const [message, setMessage] = useState("");
   // Create an initial state for the form data
   // Can be reused to reset form
   const INITIAL_STATE = {
@@ -37,6 +38,7 @@ const LoginForm = (props) => {
         props.setToken(result.data.access_token);
         navigate("/welcome");
       } else {
+        setMessage(result.data.message)
         console.log(result.data.message);
       }
     } catch (err) {
@@ -58,6 +60,7 @@ const LoginForm = (props) => {
         submittedFormData(data);
       })}
     >
+      {message && <p>{message}</p>}
       <div>
         <label htmlFor="username">Username</label>
         <input {...register("username", { required: "This is required" })} />
