@@ -2,9 +2,16 @@ from flask import Flask, jsonify, request
 from db import create_tables
 from werkzeug.security import check_password_hash, generate_password_hash
 import baby_tracker_controller
+from datetime import datetime, timedelta, timezone
+import json
+
+from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, unset_jwt_cookies, jwt_required, JWTManager
 
 app = Flask(__name__)
 
+app.config["JWT_SECRET_KEY"] = "please-remember-to-change-me"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+jwt = JWTManager(app) 
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -39,7 +46,9 @@ def login():
         return jsonify(response)
 
     else:
-        response = {'message': username}
+        access_token = create_access_token(identity=username)
+        # response = {'message': username}
+        response = {"access_token":access_token}
         return jsonify(response)
 
 
@@ -50,7 +59,22 @@ def after_request(response):
     response.headers["Access-Control-Allow-Credentials"] = "true"
     response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE"
     response.headers["Access-Control-Allow-Headers"] = "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
-    return response
+
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            data = response.get_json()
+            if type(data) is dict:
+                data["access_token"] = access_token 
+                response.data = json.dumps(data)
+                print(response)
+        return response
+    except (RuntimeError, KeyError):
+        # Case where there is not a valid JWT. Just return the original respone
+        return response
 
 
 if __name__ == "__main__":
