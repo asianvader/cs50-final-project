@@ -3,8 +3,10 @@ import React, { useEffect } from "react";
 import { format } from "date-fns";
 import { constants, BASEURL } from "../constants";
 import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 
 const RegisterUserForm = () => {
+  const navigate = useNavigate();
   // Create an initial state for the form data
   // Can be reused to reset form
   const INITIAL_STATE = {
@@ -28,8 +30,8 @@ const RegisterUserForm = () => {
     try {
       // Post data to DB
       await axios.post(`${BASEURL}/register`, data);
-
-      // Redirect to login page
+      // Redirect user to login page
+      navigate('/login')
     } catch (err) {
       console.error(err.message);
     }

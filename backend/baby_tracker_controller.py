@@ -19,6 +19,7 @@ def check_user(username):
     statement = "SELECT * FROM users WHERE username = ?"
     values = cursor.execute(statement, [username]).fetchall()
     convert_data = []
+    # Loop through to extract column headings and output as a dictionary
     for item in values:
         convert_data.append({k: item[k] for k in item.keys()})
     return convert_data

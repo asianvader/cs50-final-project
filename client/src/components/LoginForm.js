@@ -27,8 +27,10 @@ const LoginForm = () => {
       // Check user in db
       const result = await axios.post(`${BASEURL}/login`, data);
       console.log(result.data);
+      // Username and password are correct
       if (result.data.message === data.username) {
         console.log("success", result.data.message);
+        
       } else {
         console.log(result.data.message);
       }
