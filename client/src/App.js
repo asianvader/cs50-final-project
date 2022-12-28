@@ -5,27 +5,22 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Welcome from "./pages/Welcome";
 import useToken from "./components/UseToken";
-import Header from "./components/Header";
+// import Header from "./components/Header";
 
 const App = () => {
   const { token, removeToken, setToken } = useToken();
 
   return (
     <div>
-      <Navbar />  
-      <Header token={removeToken} />    
+      <Navbar removeToken={removeToken} token={token} />
       <Routes>
-        
-        {!token && token!=="" &&token!== undefined?
-          <Route path="/login" element={<Login setToken={setToken}/>} />
-        :(
+        {!token && token !== "" && token !== undefined ? (
+          <Route path="/login" element={<Login setToken={setToken} />} />
+        ) : (
           <Route path="/welcome" element={<Welcome />} />
         )}
-        
-        {/* <Route path="/register" element={<Register />} />  */}
+        <Route path="/register" element={<Register />} />
       </Routes>
-
-
     </div>
   );
 };

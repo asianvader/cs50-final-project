@@ -21,10 +21,15 @@ def register():
     hashed_password = generate_password_hash(password)
     print(username, hashed_password)
 
+    # Check if user already exists
+    check_user_exists = baby_tracker_controller.check_user
+    if len(check_user_exists) == 1:
+        response = {'message': 'User already exists.'}
+        return jsonify(response)
+
+    # If not, add user to db
     result = baby_tracker_controller.insert_user(username, hashed_password)
-
     print(result)
-
     response = {'message': 'User added'}
     return jsonify(response)
 
@@ -44,17 +49,18 @@ def login():
     if len(result) != 1 or not check_password_hash(result[0]["hash"], password):
         response = {'message': "User doesn't exist or password isn't correct. Please try again."}
         return jsonify(response)
-        # TODO Add error message
 
     else:
+        # Create access token
         access_token = create_access_token(identity=username)
-        # response = {'message': username}
+
+        # Return token to the client
         response = {"access_token":access_token}
         return jsonify(response)
 
 @app.route("/logout", methods=["POST"])
 def logout():
-    response = jsonify({"msg": "logout successful"})
+    response = jsonify({"message": "logout successful"})
     unset_jwt_cookies(response)
     print("logout")
     return response
