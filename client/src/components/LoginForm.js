@@ -36,7 +36,7 @@ const LoginForm = (props) => {
       if (Object.keys(message)[0] === "access_token") {
         console.log("success", result.data);
         props.setToken(result.data.access_token);
-        navigate("/welcome");
+        navigate("/main-menu", {state:{username:data.username}});
       } else {
         setMessage(result.data.message)
         console.log(result.data.message);

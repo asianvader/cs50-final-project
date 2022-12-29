@@ -65,6 +65,22 @@ def logout():
     print("logout")
     return response
 
+@app.route("/main-menu", methods=["POST"])
+@jwt_required()
+def main_menu():
+    username = request.get_json()
+    print(username["username"])
+    # Get userid
+    user_details = baby_tracker_controller.check_user(username["username"])
+    id = user_details[0]["id"]
+    print(id)
+    children = baby_tracker_controller.check_baby_info(id)
+    print(children)
+    if len(children) > 0:
+        return jsonify(children)
+    else:
+        return jsonify({'message': 'no children', 'id': id})
+
 @app.after_request
 def after_request(response):
     # <- You can change "*" for a domain for example "http://localhost"

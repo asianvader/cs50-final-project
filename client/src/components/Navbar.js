@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 function Navbar(props) {
   const token = props.token;
   const navigate = useNavigate();
+
   function logOut() {
     axios
       .post(`${BASEURL}/logout`)
