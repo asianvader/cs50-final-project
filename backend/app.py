@@ -4,7 +4,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import baby_tracker_controller
 from datetime import datetime, timedelta, timezone
 import json
-
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, unset_jwt_cookies, jwt_required, JWTManager
 
 app = Flask(__name__)
@@ -22,7 +21,7 @@ def register():
     print(username, hashed_password)
 
     # Check if user already exists
-    check_user_exists = baby_tracker_controller.check_user
+    check_user_exists = baby_tracker_controller.check_user(username)
     if len(check_user_exists) == 1:
         response = {'message': 'User already exists.'}
         return jsonify(response)

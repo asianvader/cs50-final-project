@@ -24,4 +24,5 @@ def create_tables():
     db = get_db()
     cursor = db.cursor()
     for table in tables:
+        print('create tables')
         cursor.execute(table)
