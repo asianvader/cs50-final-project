@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MainMenu from "./pages/MainMenu";
 import useToken from "./components/UseToken";
+import AddBaby from "./pages/AddBaby";
 
 const App = () => {
   const { token, removeToken, setToken } = useToken();
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/main-menu" element={<MainMenu token={token} />} />
         )}
         <Route path="/register" element={<Register />} />
+        <Route path="/add-baby" element={<AddBaby token={token}/>}/>
       </Routes>
     </div>
   );

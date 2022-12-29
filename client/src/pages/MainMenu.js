@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BASEURL } from "../constants";
 import axios from "axios";
 
 const MainMenu = (props) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const username = location.state.username;
   const [userDetails, setUserDetails] = useState({
     username: username,
@@ -56,7 +57,9 @@ const MainMenu = (props) => {
     weight: "Log weight",
   };
 
-  function addBaby() {}
+  function addBaby() {
+    navigate("/add-baby", { state: { id: userDetails.id } });
+  }
 
   function addFeed() {}
 
