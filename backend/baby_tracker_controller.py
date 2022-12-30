@@ -67,7 +67,6 @@ def get_activity_history(id, baby, activity):
     convert_data = []
     # Loop through to extract column headings and output as a dictionary
     for item in values:
-        print(item)
         convert_data.append({k: item[k] for k in item.keys()})
     return convert_data
 

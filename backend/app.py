@@ -5,11 +5,20 @@ import baby_tracker_controller
 from datetime import datetime, timedelta, timezone
 import json
 from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, unset_jwt_cookies, jwt_required, JWTManager
+import os
+from dotenv import load_dotenv
+
+
+def configure():
+    load_dotenv()
+
 
 app = Flask(__name__)
 
-app.config["JWT_SECRET_KEY"] = "please-remember-to-change-me"
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+jwt_secret_key = os.getenv('JWT_SECRET_KEY')
+print(jwt_secret_key)
+app.config["JWT_SECRET_KEY"] = jwt_secret_key
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
 jwt = JWTManager(app)
 
 
@@ -34,18 +43,11 @@ def register():
     return jsonify(response)
 
 
-@app.route('/login', methods=['POST'])
-def login():
-    print('LOGIN')
-    user_details = request.get_json()
-    username = user_details['username']
-    password = user_details['password']
-    print(username, password)
-
+@app.route('/login/<username>/<password>', methods=['GET'])
+def login(username, password):
     # Check db
     result = baby_tracker_controller.check_user(username)
     # Ensure username exists and password is correct
-    print(result)
     if len(result) != 1 or not check_password_hash(result[0]["hash"], password):
         response = {
             'message': "User doesn't exist or password isn't correct. Please try again."}
@@ -68,13 +70,11 @@ def logout():
     return response
 
 
-@app.route("/main-menu", methods=["POST"])
+@app.route("/main-menu/<username>", methods=["GET"])
 @jwt_required()
-def main_menu():
-    username = request.get_json()
-    print(username["username"])
+def main_menu(username):
     # Get userid
-    user_details = baby_tracker_controller.check_user(username["username"])
+    user_details = baby_tracker_controller.check_user(username)
     id = user_details[0]["id"]
     print(id)
     children = baby_tracker_controller.check_baby_info(id)

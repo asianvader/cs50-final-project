@@ -19,9 +19,8 @@ const MainMenu = (props) => {
 
   useEffect(() => {
     axios
-      .post(
-        `${BASEURL}/main-menu`,
-        { username: username },
+      .get(
+        `${BASEURL}/main-menu/${username}`,
         {
           headers: {
             Authorization: "Bearer " + props.token,

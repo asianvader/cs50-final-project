@@ -25,10 +25,10 @@ const LoginForm = (props) => {
   } = useForm(INITIAL_STATE);
 
   const submittedFormData = async (data) => {
-    console.log(data);
+    console.log(data.username, data.password);
     try {
       // Check user in db
-      const result = await axios.post(`${BASEURL}/login`, data);
+      const result = await axios.get(`${BASEURL}/login/${data.username}/${data.password}`);
       console.log(result.data);
       // Username and password are correct
       const message = result.data;
