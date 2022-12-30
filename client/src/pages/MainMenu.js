@@ -57,8 +57,9 @@ const MainMenu = (props) => {
     add: "Add baby",
     feed: "Log feed",
     sleep: "Log sleep",
-    nappy: "Nappy Change",
+    nappy: "Nappy change",
     weight: "Log weight",
+    "activity-history": "Activity history",
   };
 
   function addBaby() {
@@ -69,6 +70,16 @@ const MainMenu = (props) => {
 
   function addFeedHandler() {
     navigate("/add-feed", {
+      state: {
+        id: userDetails.id,
+        username: username,
+        babyName: children[0].baby_name,
+      },
+    });
+  }
+
+  function activityHistoryHandler() {
+    navigate("/activity-history", {
       state: {
         id: userDetails.id,
         username: username,
@@ -93,6 +104,9 @@ const MainMenu = (props) => {
           <button onClick={addSleep}>{options.sleep}</button>
           <button onClick={addNappy}>{options.nappy}</button>
           <button onClick={addWeight}>{options.weight}</button>
+          <button onClick={activityHistoryHandler}>
+            {options["activity-history"]}
+          </button>
         </>
       )}
 
