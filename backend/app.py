@@ -99,7 +99,7 @@ def add_baby():
 
 
 @app.route("/add-feed", methods=["POST"])
-@jwt_required()
+# @jwt_required()
 def add_feed():
     feed_details = request.get_json()
     print(feed_details)

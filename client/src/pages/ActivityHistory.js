@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BASEURL } from "../constants";
 import axios from "axios";
-import dayjs from "dayjs";
+
+import FeedActivityTable from "../components/FeedActivityTable";
 
 function ActivityHistory(props) {
   const location = useLocation();
@@ -12,9 +13,9 @@ function ActivityHistory(props) {
     babyName: location.state.babyName,
     id: location.state.id,
   };
-
   const activities = ["Activity", "Feed", "Sleep", "Nappies", "Weight"];
   const [selectedOption, setSelectedOption] = useState("");
+  const [resultsData, setResultsData] = useState([]);
 
   const handleActivityChange = (event) => {
     const value = event.target.value;
@@ -37,7 +38,7 @@ function ActivityHistory(props) {
           }
         )
         .then((response) => {
-          
+          setResultsData(response.data)
         })
         .catch((err) => {
           console.error(err);
@@ -62,6 +63,7 @@ function ActivityHistory(props) {
           </select>
         </label>
       </form>
+      {selectedOption === "feed" && <FeedActivityTable data={resultsData}/>}
     </div>
   );
 }
