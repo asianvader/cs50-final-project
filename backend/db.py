@@ -17,7 +17,7 @@ def create_tables():
         """CREATE TABLE IF NOT EXISTS baby_info(
                 user_id,
                 baby_name TEXT NOT NULL,
-                dob 
+                dob TEXT NOT NULL
             )
             """
     ]

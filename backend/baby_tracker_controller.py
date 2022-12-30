@@ -24,11 +24,11 @@ def check_user(username):
         convert_data.append({k: item[k] for k in item.keys()})
     return convert_data
 
+
 def check_baby_info(id):
     db = get_db()
     cursor = db.cursor()
     cursor.row_factory = sqlite3.Row
-    print('check')
     statement = "SELECT users.id, users.username, baby_info.baby_name, baby_info.dob FROM users JOIN baby_info ON users.id = baby_info.user_id WHERE users.id = ?"
     values = cursor.execute(statement, [id]).fetchall()
     convert_data = []
@@ -36,3 +36,13 @@ def check_baby_info(id):
     for item in values:
         convert_data.append({k: item[k] for k in item.keys()})
     return convert_data
+
+
+def add_baby(name, dob, id):
+    db = get_db()
+    cursor = db.cursor()
+    print('add baby')
+    statement = "INSERT INTO baby_info(baby_name, user_id, dob) VALUES (?,?,?)"
+    cursor.execute(statement, [name, id, dob])
+    db.commit()
+    return True

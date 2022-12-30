@@ -1,11 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import DatePicker from "../components/DatePicker";
+import dayjs from "dayjs";
+import axios from "axios";
+import { BASEURL } from "../constants";
 
 const AddBaby = (props) => {
+  console.log(props.token);
   const location = useLocation();
   const userID = location.state.id;
-  console.log(userID);
+  const [dob, setDob] = useState();
 
   // Dependencies for form
   const {
@@ -18,7 +23,22 @@ const AddBaby = (props) => {
 
   const submittedFormData = async (data) => {
     console.log(data);
-    // TODO
+    const babyDetails = {
+      ...data,
+      dob: dob,
+      id: userID,
+    };
+    axios
+      .post(`${BASEURL}/add-baby`, babyDetails, {
+        headers: {
+          Authorization: "Bearer " + props.token,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        // TODO: redirect user to main menu
+        // render success message
+      });
   };
   // Reset input fields if forms has been submitted
   useEffect(() => {
@@ -26,16 +46,21 @@ const AddBaby = (props) => {
       reset();
     }
   }, [formState, reset]);
+
+  //  Get date selected from child component
+  const getDateVal = (data) => {
+    console.log("Date picker", dayjs(data).toISOString());
+    // convert date to ISO 8601 string
+    setDob(dayjs(data).toISOString());
+  };
   return (
-    <div>
+    <>
       <h2>Add baby's details</h2>
       <form
         onSubmit={handleSubmit((data) => {
-          console.log(data);
           submittedFormData(data);
         })}
       >
-        {/* {message && <p>{message}</p>} */}
         <div>
           <label htmlFor="name">Name</label>
           <input {...register("name", { required: "This is required" })} />
@@ -43,12 +68,11 @@ const AddBaby = (props) => {
         </div>
         <div>
           <label htmlFor="dob">Date of birth</label>
-          <input {...register("dob", { required: "This is required" })} />
-          <p>{errors.dob?.message}</p>
+          <DatePicker dateVal={getDateVal} />
         </div>
         <button type="submit">Add</button>
       </form>
-    </div>
+    </>
   );
 };
 

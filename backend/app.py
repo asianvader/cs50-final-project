@@ -80,6 +80,18 @@ def main_menu():
     else:
         return jsonify({'message': 'no children', 'id': id})
 
+@app.route("/add-baby", methods=["POST"])
+@jwt_required()
+def add_baby():
+    baby_details = request.get_json()
+    print(baby_details)
+    name = baby_details["name"]
+    dob = baby_details["dob"]
+    id = baby_details["id"]
+    add_bb = baby_tracker_controller.add_baby(name, dob, id)
+    if add_baby:
+        return jsonify({'message': 'Successfully added baby'})
+
 @app.after_request
 def after_request(response):
     # <- You can change "*" for a domain for example "http://localhost"
