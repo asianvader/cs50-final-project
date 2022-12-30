@@ -2,9 +2,11 @@ import sqlite3
 
 DATABASE_NAME = 'baby-tracker.db'
 
+
 def get_db():
     conn = sqlite3.connect(DATABASE_NAME)
     return conn
+
 
 def create_tables():
     tables = [
@@ -18,6 +20,14 @@ def create_tables():
                 user_id,
                 baby_name TEXT NOT NULL,
                 dob TEXT NOT NULL
+            )
+            """,
+        """CREATE TABLE IF NOT EXISTS activity(
+                user_id,
+                baby_name TEXT NOT NULL,
+                activity TEXT NOT NULL,
+                date TEXT NOT NULL,
+                information TEXT
             )
             """
     ]

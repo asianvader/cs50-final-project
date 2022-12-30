@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
-const DatePicker = () => {
-  const [date, setDate] = React.useState(dayjs("2018-01-01T00:00:00.000Z"));
+const DatePicker = (props) => {
+  const [date, setDate] = useState(dayjs(new Date()));
   console.log(date);
+  props.dateVal(date);
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <MobileDateTimePicker
         label="Select Date"
         value={date}

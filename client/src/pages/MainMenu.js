@@ -43,9 +43,11 @@ const MainMenu = (props) => {
             children: false,
           });
         }
-        console.log(response);
-        console.log(response.data.length);
-      });
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+      ;
   }, []);
   console.log("userDetails", userDetails);
   console.log("children", children);
@@ -58,10 +60,16 @@ const MainMenu = (props) => {
   };
 
   function addBaby() {
-    navigate("/add-baby", { state: { id: userDetails.id, username: username } });
+    navigate("/add-baby", {
+      state: { id: userDetails.id, username: username },
+    });
   }
 
-  function addFeed() {}
+  function addFeedHandler() {
+    navigate("/add-feed", {
+      state: { id: userDetails.id, username: username, babyName: children[0].baby_name },
+    });
+  }
 
   function addSleep() {}
 
@@ -75,7 +83,7 @@ const MainMenu = (props) => {
 
       {userDetails.children && (
         <>
-          <button onClick={addFeed}>{options.feed}</button>
+          <button onClick={addFeedHandler}>{options.feed}</button>
           <button onClick={addSleep}>{options.sleep}</button>
           <button onClick={addNappy}>{options.nappy}</button>
           <button onClick={addWeight}>{options.weight}</button>

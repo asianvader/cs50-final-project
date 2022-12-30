@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import DatePicker from "../components/DatePicker";
 import dayjs from "dayjs";
 import axios from "axios";
+import { useForm } from "react-hook-form";
+import DateTimePicker from "../components/DateTimePicker";
 import { BASEURL } from "../constants";
 
-const AddBaby = (props) => {
+function AddFeed(props) {
   const navigate = useNavigate();
   const location = useLocation();
   const userID = location.state.id;
   const username = location.state.username;
-  let dob;
+  const babyName = location.state.babyName;
+  let date;
   const [message, setMessage] = useState();
 
   // Dependencies for form
@@ -25,13 +26,15 @@ const AddBaby = (props) => {
 
   const submittedFormData = (data) => {
     console.log(data);
-    const babyDetails = {
-      ...data,
-      dob: dob,
+    const feedDetails = {
+      information: data.volume,
       id: userID,
+      activity: "feed",
+      date: date,
+      name: babyName,
     };
     axios
-      .post(`${BASEURL}/add-baby`, babyDetails, {
+      .post(`${BASEURL}/add-feed`, feedDetails, {
         headers: {
           Authorization: "Bearer " + props.token,
         },
@@ -39,12 +42,18 @@ const AddBaby = (props) => {
       .then((response) => {
         console.log(response);
         const getMsg = response.data.message;
+        // render success message
         setMessage(getMsg);
+        // remove message after 5 seconds
         setTimeout(() => {
-          navigate("/main-menu", { state: { username: username } });
-        }, 2000);
+          setMessage(null);
+        }, 5000);
+      })
+      .catch((err) => {
+        console.error(err);
       });
   };
+
   // Reset input fields if forms has been submitted
   useEffect(() => {
     if (formState.isSubmitSuccessful) {
@@ -56,11 +65,12 @@ const AddBaby = (props) => {
   const getDateVal = (data) => {
     console.log("Date picker", dayjs(data).toISOString());
     // convert date to ISO 8601 string
-    dob = dayjs(data).toISOString();
+    date = dayjs(data).toISOString();
   };
+
   return (
     <div>
-      <h2>Add baby's details</h2>
+      <h2>Add feed for {babyName}</h2>
       {message && <p>{message}</p>}
       <form
         onSubmit={handleSubmit((data) => {
@@ -68,18 +78,34 @@ const AddBaby = (props) => {
         })}
       >
         <div>
-          <label htmlFor="name">Name</label>
-          <input {...register("name", { required: "This is required" })} />
-          <p>{errors.name?.message}</p>
+          <input
+            id="volume"
+            {...register("volume", {
+              required: "This is required",
+              maxLength: 4,
+              pattern: /^[0-9]*$/,
+            })}
+          />
+          <label htmlFor="volume"> ml</label>
+          {errors.volume && errors.volume.type === "required" && (
+            <p>This is required</p>
+          )}
+          {errors.volume && errors.volume.type === "maxLength" && (
+            <p>Max length exceeded</p>
+          )}
+          {errors.volume && errors.volume.type === "pattern" && (
+            <p>Numbers only </p>
+          )}
         </div>
         <div>
-          <label htmlFor="dob">Date of birth</label>
-          <DatePicker dateVal={getDateVal} />
+          <label htmlFor="dob">Enter date and time:</label>
+          <br />
+          <DateTimePicker dateVal={getDateVal} />
         </div>
         <button type="submit">Add</button>
       </form>
     </div>
   );
-};
+}
 
-export default AddBaby;
+export default AddFeed;

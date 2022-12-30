@@ -4,13 +4,14 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import baby_tracker_controller
 from datetime import datetime, timedelta, timezone
 import json
-from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, unset_jwt_cookies, jwt_required, JWTManager
+from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, unset_jwt_cookies, jwt_required, JWTManager
 
 app = Flask(__name__)
 
 app.config["JWT_SECRET_KEY"] = "please-remember-to-change-me"
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
-jwt = JWTManager(app) 
+jwt = JWTManager(app)
+
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -46,7 +47,8 @@ def login():
     # Ensure username exists and password is correct
     print(result)
     if len(result) != 1 or not check_password_hash(result[0]["hash"], password):
-        response = {'message': "User doesn't exist or password isn't correct. Please try again."}
+        response = {
+            'message': "User doesn't exist or password isn't correct. Please try again."}
         return jsonify(response)
 
     else:
@@ -54,8 +56,9 @@ def login():
         access_token = create_access_token(identity=username)
 
         # Return token to the client
-        response = {"access_token":access_token}
+        response = {"access_token": access_token}
         return jsonify(response)
+
 
 @app.route("/logout", methods=["POST"])
 def logout():
@@ -63,6 +66,7 @@ def logout():
     unset_jwt_cookies(response)
     print("logout")
     return response
+
 
 @app.route("/main-menu", methods=["POST"])
 @jwt_required()
@@ -80,6 +84,7 @@ def main_menu():
     else:
         return jsonify({'message': 'no children', 'id': id})
 
+
 @app.route("/add-baby", methods=["POST"])
 @jwt_required()
 def add_baby():
@@ -91,6 +96,26 @@ def add_baby():
     add_bb = baby_tracker_controller.add_baby(name, dob, id)
     if add_bb:
         return jsonify({'message': 'Successfully added baby'})
+
+
+
+
+@app.route("/add-feed", methods=["POST"])
+@jwt_required()
+def add_feed():
+    feed_details = request.get_json()
+    print(feed_details)
+    name = feed_details["name"]
+    date = feed_details["date"]
+    id = feed_details["id"]
+    activity = feed_details["activity"]
+    information = feed_details["information"]
+    feed = baby_tracker_controller.log_activity(
+        activity, name, id, date, information)
+    if feed:
+        return jsonify({'message': 'Successfully added feed'})
+
+
 
 @app.after_request
 def after_request(response):
@@ -108,7 +133,7 @@ def after_request(response):
             access_token = create_access_token(identity=get_jwt_identity())
             data = response.get_json()
             if type(data) is dict:
-                data["access_token"] = access_token 
+                data["access_token"] = access_token
                 response.data = json.dumps(data)
                 print(response)
         return response
