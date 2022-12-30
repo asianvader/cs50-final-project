@@ -89,7 +89,7 @@ def add_baby():
     dob = baby_details["dob"]
     id = baby_details["id"]
     add_bb = baby_tracker_controller.add_baby(name, dob, id)
-    if add_baby:
+    if add_bb:
         return jsonify({'message': 'Successfully added baby'})
 
 @app.after_request

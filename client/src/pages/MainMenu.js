@@ -58,7 +58,7 @@ const MainMenu = (props) => {
   };
 
   function addBaby() {
-    navigate("/add-baby", { state: { id: userDetails.id } });
+    navigate("/add-baby", { state: { id: userDetails.id, username: username } });
   }
 
   function addFeed() {}

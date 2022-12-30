@@ -7,10 +7,12 @@ import axios from "axios";
 import { BASEURL } from "../constants";
 
 const AddBaby = (props) => {
-  console.log(props.token);
+  const navigate = useNavigate();
   const location = useLocation();
   const userID = location.state.id;
-  const [dob, setDob] = useState();
+  const username = location.state.username;
+  let dob;
+  const [message, setMessage] = useState();
 
   // Dependencies for form
   const {
@@ -36,8 +38,11 @@ const AddBaby = (props) => {
       })
       .then((response) => {
         console.log(response);
-        // TODO: redirect user to main menu
-        // render success message
+        const getMsg = response.data.message;
+        setMessage(getMsg);
+        setTimeout(() => {
+          navigate("/main-menu", { state: { username: username } });
+        }, 2000);
       });
   };
   // Reset input fields if forms has been submitted
@@ -51,11 +56,12 @@ const AddBaby = (props) => {
   const getDateVal = (data) => {
     console.log("Date picker", dayjs(data).toISOString());
     // convert date to ISO 8601 string
-    setDob(dayjs(data).toISOString());
+    dob = dayjs(data).toISOString();
   };
   return (
     <>
       <h2>Add baby's details</h2>
+      {message && <p>{message}</p>}
       <form
         onSubmit={handleSubmit((data) => {
           submittedFormData(data);
