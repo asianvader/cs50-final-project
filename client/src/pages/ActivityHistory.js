@@ -17,24 +17,32 @@ function ActivityHistory(props) {
   const [selectedOption, setSelectedOption] = useState("");
 
   const handleActivityChange = (event) => {
-    setSelectedOption(event.target.value);
+    const value = event.target.value;
+    let activity = value.toLowerCase();
+    setSelectedOption(activity);
+
     // Check db
-    axios
-      .get(
-        `${BASEURL}/activity-history`,
-        data,
-        {
-          headers: {
-            Authorization: "Bearer " + props.token,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    console.log("call db");
+    if (event.target.value !== "Activity") {
+      data["activity"] = activity;
+      
+      // Query db
+      axios
+        .get(
+          `${BASEURL}/activity-history/${data.id}/${data.babyName}/${data.activity}`,
+          {
+            headers: {
+              Authorization: "Bearer " + props.token,
+            },
+          }
+        )
+        .then((response) => {
+          
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   };
 
   console.log(selectedOption);

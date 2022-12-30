@@ -56,3 +56,18 @@ def log_activity(activity, name, id, date, information):
     cursor.execute(statement, [name, id, date, activity, information])
     db.commit()
     return True
+
+def get_activity_history(id, baby, activity):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.row_factory = sqlite3.Row
+    print('check activity')
+    statement = "SELECT * FROM activity WHERE user_id = ? AND baby_name = ? AND activity = ?"
+    values = cursor.execute(statement, [id, baby, activity]).fetchall()
+    convert_data = []
+    # Loop through to extract column headings and output as a dictionary
+    for item in values:
+        print(item)
+        convert_data.append({k: item[k] for k in item.keys()})
+    return convert_data
+

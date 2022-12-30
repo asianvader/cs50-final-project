@@ -98,8 +98,6 @@ def add_baby():
         return jsonify({'message': 'Successfully added baby'})
 
 
-
-
 @app.route("/add-feed", methods=["POST"])
 @jwt_required()
 def add_feed():
@@ -115,6 +113,15 @@ def add_feed():
     if feed:
         return jsonify({'message': 'Successfully added feed'})
 
+
+@app.route("/activity-history/<id>/<baby>/<activity>", methods=["GET"])
+@jwt_required()
+def activity_history(id, baby, activity):
+    user_id = int(id)
+    results = baby_tracker_controller.get_activity_history(
+        user_id, baby, activity)
+    print(results)
+    return jsonify(results)
 
 
 @app.after_request
