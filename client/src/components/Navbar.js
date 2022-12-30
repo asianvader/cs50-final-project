@@ -14,6 +14,7 @@ function Navbar(props) {
       .post(`${BASEURL}/logout`)
       .then(() => {
         props.removeToken();
+        sessionStorage.removeItem("username");
         navigate("/login");
       })
       .catch((error) => {
@@ -30,17 +31,21 @@ function Navbar(props) {
         {!token && token !== "" && token !== undefined ? (
           <>
             <li>
-              <Link to="/Register">Register</Link>
+              <Link to="/register">Register</Link>
             </li>
-            <></>
             <li>
-              <Link to="/Login">Login</Link>
+              <Link to="/login">Login</Link>
             </li>
           </>
         ) : (
-          <li>
-            <button onClick={logOut}>Logout</button>
-          </li>
+          <>
+            <li>
+              <Link to="/main-menu">Log activity</Link>
+            </li>
+            <li>
+              <button onClick={logOut}>Logout</button>
+            </li>
+          </>
         )}
       </ul>
     </nav>

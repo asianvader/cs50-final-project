@@ -6,7 +6,10 @@ import axios from "axios";
 const MainMenu = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const username = location.state.username;
+  const username = location.state
+    ? location.state.username
+    : sessionStorage.getItem("username");
+
   const [userDetails, setUserDetails] = useState({
     username: username,
     id: null,
@@ -45,9 +48,8 @@ const MainMenu = (props) => {
         }
       })
       .catch((err) => {
-        console.error(err)
-      })
-      ;
+        console.error(err);
+      });
   }, []);
   console.log("userDetails", userDetails);
   console.log("children", children);
@@ -67,7 +69,11 @@ const MainMenu = (props) => {
 
   function addFeedHandler() {
     navigate("/add-feed", {
-      state: { id: userDetails.id, username: username, babyName: children[0].baby_name },
+      state: {
+        id: userDetails.id,
+        username: username,
+        babyName: children[0].baby_name,
+      },
     });
   }
 
@@ -79,7 +85,7 @@ const MainMenu = (props) => {
 
   return (
     <div>
-      <h1>Welcome back {location.state.username}</h1>
+      <h1>Welcome back {username}</h1>
 
       {userDetails.children && (
         <>

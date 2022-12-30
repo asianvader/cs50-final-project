@@ -35,7 +35,11 @@ const LoginForm = (props) => {
       console.log(Object.keys(message));
       if (Object.keys(message)[0] === "access_token") {
         console.log("success", result.data);
+        // Add token to local storage
         props.setToken(result.data.access_token);
+        // Add username to local storage
+        sessionStorage.setItem('username', data.username);
+        // Redirect to main menu
         navigate("/main-menu", {state:{username:data.username}});
       } else {
         setMessage(result.data.message)
