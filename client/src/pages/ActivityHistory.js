@@ -50,7 +50,7 @@ function ActivityHistory(props) {
 
   return (
     <div>
-      <h2>Activity History</h2>
+      <h2>{data.babyName}'s Activity History</h2>
       <form>
         <label>
           Choose an option:
