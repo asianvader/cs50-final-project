@@ -109,8 +109,6 @@ const MainMenu = (props) => {
     });
   }
 
-  function addWeight() {}
-
   return (
     <div className="page-container main-menu">
       <h2>Welcome back {username}</h2>
@@ -120,7 +118,6 @@ const MainMenu = (props) => {
           <Button onClick={addFeedHandler}>{options.feed}</Button>
           <Button onClick={addSleepHandler}>{options.sleep}</Button>
           <Button onClick={addNappyHandler}>{options.nappy}</Button>
-          <Button onClick={addWeight}>{options.weight}</Button>
           <Button onClick={activityHistoryHandler}>
             {options["activity-history"]}
           </Button>
