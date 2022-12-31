@@ -1,6 +1,6 @@
 import React from "react";
 import dayjs from "dayjs";
-import "./Table.scss"
+import "./Table.scss";
 import { Table } from "react-bootstrap";
 
 function FeedActivityTable(props) {
@@ -22,9 +22,11 @@ function FeedActivityTable(props) {
   return (
     <Table striped bordered hover size="sm">
       <thead>
-        <th>Date</th>
-        <th>Activity</th>
-        <th>Volumn (ml)</th>
+        <tr key="title-row">
+          <th>Date</th>
+          <th>Activity</th>
+          <th>Volumn (ml)</th>
+        </tr>
       </thead>
       <tbody>
         {data.map((item, index) => (

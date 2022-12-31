@@ -50,7 +50,7 @@ function ActivityHistory(props) {
 
   return (
     <div className="page-container">
-      <div className="">
+      <div className="history">
 
       </div>
       <h2>{data.babyName}'s Activity History</h2>
