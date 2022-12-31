@@ -2,10 +2,10 @@ import React, { useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import dayjs from "dayjs";
 import axios from "axios";
-
 import DateTimePicker from "../components/DateTimePicker";
 import { BASEURL } from "../constants";
 import { Button, Form } from "react-bootstrap";
+import "./AddNappy.scss"
 
 function AddNappy(props) {
   const location = useLocation();
