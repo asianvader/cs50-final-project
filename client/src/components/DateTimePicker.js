@@ -7,7 +7,6 @@ import dayjs from "dayjs";
 
 const DatePicker = (props) => {
   const [date, setDate] = useState(dayjs(new Date()));
-  console.log(date);
   props.dateVal(date);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

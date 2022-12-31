@@ -9,6 +9,7 @@ import AddBaby from "./pages/AddBaby";
 import AddFeed from "./pages/AddFeed";
 import ActivityHistory from "./pages/ActivityHistory";
 import Home from "./pages/Home";
+import AddSleep from "./pages/AddSleep";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from "react-bootstrap/Button";
 import './App.scss';
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/add-baby" element={<AddBaby token={token}/>}/>
         <Route path="/add-feed" element={<AddFeed token={token}/>}/>
+        <Route path="/add-sleep" element={<AddSleep token={token}/>}/>
         <Route path="/activity-history" element={<ActivityHistory token={token}/>}/>
 
       </Routes>

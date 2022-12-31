@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import dayjs from "dayjs";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -9,7 +9,6 @@ import { Button, Form } from "react-bootstrap";
 import "./AddFeed.scss"
 
 function AddFeed(props) {
-  const navigate = useNavigate();
   const location = useLocation();
   const userID = location.state.id;
   const username = location.state.username;
@@ -26,6 +25,7 @@ function AddFeed(props) {
     formState: { errors, isSubmitSuccessful },
   } = useForm();
 
+  // Post to DB
   const submittedFormData = (data) => {
     console.log(data);
     const feedDetails = {

@@ -116,6 +116,21 @@ def add_feed():
     if feed:
         return jsonify({'message': 'Successfully added feed'})
 
+@app.route("/add-sleep", methods=["POST"])
+@jwt_required()
+def add_sleep():
+    sleep_details = request.get_json()
+    print(sleep_details)
+    name = sleep_details["name"]
+    date = sleep_details["date"]
+    id = sleep_details["id"]
+    activity = sleep_details["activity"]
+    information = sleep_details["information"]
+    sleep = baby_tracker_controller.log_activity(
+        activity, name, id, date, information)
+    if sleep:
+        return jsonify({'message': 'Successfully added sleep'})
+
 
 @app.route("/activity-history/<id>/<baby>/<activity>", methods=["GET"])
 @jwt_required()

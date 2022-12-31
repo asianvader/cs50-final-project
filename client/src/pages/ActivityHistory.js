@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, } from "react";
+import { useLocation } from "react-router-dom";
 import { BASEURL } from "../constants";
 import axios from "axios";
 import { Form } from "react-bootstrap";
@@ -8,7 +8,6 @@ import FeedActivityTable from "../components/FeedActivityTable";
 
 function ActivityHistory(props) {
   const location = useLocation();
-  const navigate = useNavigate();
   const data = {
     username: location.state.username,
     babyName: location.state.babyName,

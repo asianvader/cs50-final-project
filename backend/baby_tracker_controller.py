@@ -51,7 +51,7 @@ def add_baby(name, dob, id):
 def log_activity(activity, name, id, date, information):
     db = get_db()
     cursor = db.cursor()
-    print('add feed')
+    print('add activity')
     statement = "INSERT INTO activity(baby_name, user_id, date, activity, information) VALUES (?,?,?,?,?)"
     cursor.execute(statement, [name, id, date, activity, information])
     db.commit()
