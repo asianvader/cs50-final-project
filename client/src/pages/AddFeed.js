@@ -5,6 +5,8 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import DateTimePicker from "../components/DateTimePicker";
 import { BASEURL } from "../constants";
+import { Button, Form } from "react-bootstrap";
+import "./AddFeed.scss"
 
 function AddFeed(props) {
   const navigate = useNavigate();
@@ -69,41 +71,49 @@ function AddFeed(props) {
   };
 
   return (
-    <div>
+    <div className="page-container">
+      <div className="add-feed">
       <h2>Add feed for {babyName}</h2>
       {message && <p>{message}</p>}
-      <form
+      <Form
         onSubmit={handleSubmit((data) => {
           submittedFormData(data);
         })}
       >
-        <div>
-          <input
+        <Form.Group>
+          <Form.Label className="mb-3" htmlFor="volume"> ml</Form.Label>
+          <Form.Control
+            type="text"
             id="volume"
+            placeholder="Millilitres (ml)"
             {...register("volume", {
               required: "This is required",
               maxLength: 4,
               pattern: /^[0-9]*$/,
             })}
           />
-          <label htmlFor="volume"> ml</label>
+          
           {errors.volume && errors.volume.type === "required" && (
-            <p>This is required</p>
+            <p className="errors">This is required</p>
           )}
           {errors.volume && errors.volume.type === "maxLength" && (
-            <p>Max length exceeded</p>
+            <p className="errors">Max length exceeded</p>
           )}
           {errors.volume && errors.volume.type === "pattern" && (
-            <p>Numbers only </p>
+            <p className="errors">Numbers only </p>
           )}
-        </div>
-        <div>
-          <label htmlFor="dob">Enter date and time:</label>
-          <br />
-          <DateTimePicker dateVal={getDateVal} />
-        </div>
-        <button type="submit">Add</button>
-      </form>
+        </Form.Group>
+        <br/>
+        <Form.Group>
+          <Form.Label htmlFor="date">Enter date and time:</Form.Label>
+            <div className="date-picker">
+              <DateTimePicker  dateVal={getDateVal} />
+            </div>
+          
+        </Form.Group>
+        <Button className="btn" type="submit">Add</Button>
+      </Form>
+      </div>
     </div>
   );
 }

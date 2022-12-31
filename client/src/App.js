@@ -8,25 +8,33 @@ import useToken from "./components/UseToken";
 import AddBaby from "./pages/AddBaby";
 import AddFeed from "./pages/AddFeed";
 import ActivityHistory from "./pages/ActivityHistory";
+import Home from "./pages/Home";
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Button from "react-bootstrap/Button";
+import './App.scss';
 
 const App = () => {
   const { token, removeToken, setToken } = useToken();
 
   return (
-    <div>
-      <Navbar removeToken={removeToken} token={token} />
-      <Routes>
+    <div >
+        <Navbar removeToken={removeToken} token={token} />
+      <div className="App">
+         <Routes>
         {!token && token !== "" && token !== undefined ? (
           <Route path="/login" element={<Login setToken={setToken} />} />
         ) : (
           <Route path="/main-menu" element={<MainMenu token={token} />} />
         )}
+        <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/add-baby" element={<AddBaby token={token}/>}/>
         <Route path="/add-feed" element={<AddFeed token={token}/>}/>
         <Route path="/activity-history" element={<ActivityHistory token={token}/>}/>
 
       </Routes>
+      </div>
+     
     </div>
   );
 };

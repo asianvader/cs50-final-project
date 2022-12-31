@@ -1,5 +1,7 @@
 import React from "react";
 import dayjs from "dayjs";
+import "./Table.scss"
+import { Table } from "react-bootstrap";
 
 function FeedActivityTable(props) {
   const data = props.data;
@@ -18,7 +20,7 @@ function FeedActivityTable(props) {
   });
 
   return (
-    <table>
+    <Table striped bordered hover size="sm">
       <thead>
         <th>Date</th>
         <th>Activity</th>
@@ -33,7 +35,7 @@ function FeedActivityTable(props) {
           </tr>
         ))}
       </tbody>
-    </table>
+    </Table>
   );
 }
 

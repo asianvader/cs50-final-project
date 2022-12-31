@@ -3,7 +3,7 @@ import LoginForm from "../components/LoginForm";
 
 const Login = (props) => {
   return (
-    <div>
+    <div className="page-container">
       <h2>Please Login</h2>
       <LoginForm setToken={props.setToken} />
     </div>

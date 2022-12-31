@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { constants, BASEURL } from "../constants";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { Button, Form } from "react-bootstrap/";
 
 const LoginForm = (props) => {
   const navigate = useNavigate();
@@ -28,7 +29,9 @@ const LoginForm = (props) => {
     console.log(data.username, data.password);
     try {
       // Check user in db
-      const result = await axios.get(`${BASEURL}/login/${data.username}/${data.password}`);
+      const result = await axios.get(
+        `${BASEURL}/login/${data.username}/${data.password}`
+      );
       console.log(result.data);
       // Username and password are correct
       const message = result.data;
@@ -38,11 +41,11 @@ const LoginForm = (props) => {
         // Add token to local storage
         props.setToken(result.data.access_token);
         // Add username to local storage
-        sessionStorage.setItem('username', data.username);
+        sessionStorage.setItem("username", data.username);
         // Redirect to main menu
-        navigate("/main-menu", {state:{username:data.username}});
+        navigate("/main-menu", { state: { username: data.username } });
       } else {
-        setMessage(result.data.message)
+        setMessage(result.data.message);
         console.log(result.data.message);
       }
     } catch (err) {
@@ -58,25 +61,31 @@ const LoginForm = (props) => {
   }, [formState, reset]);
 
   return (
-    <form
+    <Form
       onSubmit={handleSubmit((data) => {
         console.log(data);
         submittedFormData(data);
       })}
     >
       {message && <p>{message}</p>}
-      <div>
-        <label htmlFor="username">Username</label>
-        <input {...register("username", { required: "This is required" })} />
-        <p>{errors.username?.message}</p>
-      </div>
-      <div>
-        <label htmlFor="password">Password</label>
-        <input {...register("password", { required: "This is required" })} />
-        <p>{errors.password?.message}</p>
-      </div>
-      <button type="submit">Login</button>
-    </form>
+      <Form.Group>
+        <Form.Label className="mb-3" htmlFor="username">
+          Username
+        </Form.Label>
+        <Form.Control
+          type="text"
+          {...register("username", { required: "This is required" })}
+        />
+        <p className="errors">{errors.username?.message}</p>
+      </Form.Group>
+
+      <Form.Group>
+      <Form.Label className="mb-3" htmlFor="password">Password</Form.Label>
+      <Form.Control type="password"{...register("password", { required: "This is required" })} />
+        <p className="errors">{errors.password?.message}</p>
+      </Form.Group>
+      <Button variant="primary" type="submit">Login</Button>
+    </Form>
   );
 };
 

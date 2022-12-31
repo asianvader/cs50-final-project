@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BASEURL } from "../constants";
 import axios from "axios";
+import { Button } from "react-bootstrap/";
+import "./MainMenu.scss"
 
 const MainMenu = (props) => {
   const location = useLocation();
@@ -94,22 +96,21 @@ const MainMenu = (props) => {
   function addWeight() {}
 
   return (
-    <div>
-      <h1>Welcome back {username}</h1>
+    <div className="page-container main-menu">
+      <h2>Welcome back {username}</h2>
 
       {userDetails.children && (
         <>
-          <button onClick={addFeedHandler}>{options.feed}</button>
-          <button onClick={addSleep}>{options.sleep}</button>
-          <button onClick={addNappy}>{options.nappy}</button>
-          <button onClick={addWeight}>{options.weight}</button>
-          <button onClick={activityHistoryHandler}>
+          <Button onClick={addFeedHandler}>{options.feed}</Button>
+          <Button onClick={addSleep}>{options.sleep}</Button>
+          <Button onClick={addNappy}>{options.nappy}</Button>
+          <Button onClick={addWeight}>{options.weight}</Button>
+          <Button onClick={activityHistoryHandler}>
             {options["activity-history"]}
-          </button>
+          </Button>
         </>
       )}
-
-      <button onClick={addBaby}>{options.add}</button>
+      <Button onClick={addBaby}>{options.add}</Button>
     </div>
   );
 };

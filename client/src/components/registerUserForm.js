@@ -3,7 +3,8 @@ import React, { useEffect } from "react";
 import { format } from "date-fns";
 import { constants, BASEURL } from "../constants";
 import { useForm } from "react-hook-form";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { Button, Form } from "react-bootstrap/";
 
 const RegisterUserForm = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const RegisterUserForm = () => {
       // Post data to DB
       await axios.post(`${BASEURL}/register`, data);
       // Redirect user to login page
-      navigate('/login')
+      navigate("/login");
     } catch (err) {
       console.error(err.message);
     }
@@ -43,26 +44,38 @@ const RegisterUserForm = () => {
       reset();
     }
   }, [formState, reset]);
-  
+
   return (
-    <form
+    <Form
       onSubmit={handleSubmit((data) => {
         submittedFormData(data);
       })}
     >
-      <div>
-        <label htmlFor="username">Username</label>
-        <input {...register("username", { required: "This is required" })} />
-        <p>{errors.username?.message}</p>
-      </div>
-      <div>
-        <label htmlFor="password">Password</label>
-        <input {...register("password", { required: "This is required" })} />
-        <p>{errors.password?.message}</p>
-      </div>
-      <div>
-        <label htmlFor="confirmPassword">Confirm Password</label>
-        <input
+      <Form.Group>
+        <Form.Label className="mb-3" htmlFor="username">
+          Username
+        </Form.Label>
+        <Form.Control
+          {...register("username", { required: "This is required" })}
+        />
+        <p className="errors">{errors.username?.message}</p>
+      </Form.Group>
+      <Form.Group>
+        <Form.Label className="mb-3" htmlFor="password">
+          Password
+        </Form.Label>
+        <Form.Control
+          type="password"
+          {...register("password", { required: "This is required" })}
+        />
+        <p className="errors">{errors.password?.message}</p>
+      </Form.Group>
+      <Form.Group>
+        <Form.Label className="mb-3" htmlFor="confirmPassword">
+          Confirm Password
+        </Form.Label>
+        <Form.Control
+          type="password"
           {...register("confirmPassword", {
             required: "This is required",
             validate: (val) => {
@@ -72,10 +85,12 @@ const RegisterUserForm = () => {
             },
           })}
         />
-        <p>{errors.confirmPassword?.message}</p>
-      </div>
-      <button type="submit">Register</button>
-    </form>
+        <p className="errors">{errors.confirmPassword?.message}</p>
+      </Form.Group>
+      <Button className="btn" type="submit">
+        Register
+      </Button>
+    </Form>
   );
 };
 

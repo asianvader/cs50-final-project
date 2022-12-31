@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BASEURL } from "../constants";
 import axios from "axios";
+import { Form } from "react-bootstrap";
 
 import FeedActivityTable from "../components/FeedActivityTable";
 
@@ -26,7 +27,7 @@ function ActivityHistory(props) {
     console.log("call db");
     if (event.target.value !== "Activity") {
       data["activity"] = activity;
-      
+
       // Query db
       axios
         .get(
@@ -38,7 +39,7 @@ function ActivityHistory(props) {
           }
         )
         .then((response) => {
-          setResultsData(response.data)
+          setResultsData(response.data);
         })
         .catch((err) => {
           console.error(err);
@@ -49,21 +50,30 @@ function ActivityHistory(props) {
   console.log(selectedOption);
 
   return (
-    <div>
+    <div className="page-container">
+      <div className="">
+
+      </div>
       <h2>{data.babyName}'s Activity History</h2>
-      <form>
-        <label>
-          Choose an option:
-          <select value={selectedOption} onChange={handleActivityChange}>
-            {activities.map((activity) => (
-              <option key={activity} value={activity}>
-                {activity}
-              </option>
-            ))}
-          </select>
-        </label>
-      </form>
-      {selectedOption === "feed" && <FeedActivityTable data={resultsData}/>}
+      <Form>
+        <Form.Group>
+          <Form.Label className="mb-3" htmlFor="activities">
+            Choose an option:
+            <Form.Select
+              id="activies"
+              value={selectedOption}
+              onChange={handleActivityChange}
+            >
+              {activities.map((activity) => (
+                <option key={activity} value={activity}>
+                  {activity}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Label>
+        </Form.Group>
+      </Form>
+      {selectedOption === "feed" && <FeedActivityTable data={resultsData} />}
     </div>
   );
 }

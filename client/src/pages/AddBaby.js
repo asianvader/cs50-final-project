@@ -5,6 +5,8 @@ import DatePicker from "../components/DatePicker";
 import dayjs from "dayjs";
 import axios from "axios";
 import { BASEURL } from "../constants";
+import { Button, Form } from "react-bootstrap";
+import "./AddBaby.scss";
 
 const AddBaby = (props) => {
   const navigate = useNavigate();
@@ -59,25 +61,38 @@ const AddBaby = (props) => {
     dob = dayjs(data).toISOString();
   };
   return (
-    <div>
-      <h2>Add baby's details</h2>
-      {message && <p>{message}</p>}
-      <form
-        onSubmit={handleSubmit((data) => {
-          submittedFormData(data);
-        })}
-      >
-        <div>
-          <label htmlFor="name">Name</label>
-          <input {...register("name", { required: "This is required" })} />
-          <p>{errors.name?.message}</p>
-        </div>
-        <div>
-          <label htmlFor="dob">Date of birth</label>
-          <DatePicker dateVal={getDateVal} />
-        </div>
-        <button type="submit">Add</button>
-      </form>
+    <div className="page-container">
+      <div className="add-baby">
+        <h2>Add baby's details</h2>
+        {message && <p>{message}</p>}
+        <Form
+          onSubmit={handleSubmit((data) => {
+            submittedFormData(data);
+          })}
+        >
+          <Form.Group>
+            <Form.Label className="mb-3" htmlFor="name">
+              Name
+            </Form.Label>
+            <Form.Control
+              type="text"
+              {...register("name", { required: "This is required" })}
+            />
+            <p className="errors">{errors.name?.message}</p>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label className="mb-3" htmlFor="dob">
+              Date of birth
+            </Form.Label>
+            <div className="date-picker">
+              <DatePicker dateVal={getDateVal} />
+            </div>
+          </Form.Group>
+          <Button className="btn" type="submit">
+            Add
+          </Button>
+        </Form>
+      </div>
     </div>
   );
 };
