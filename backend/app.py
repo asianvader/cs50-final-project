@@ -27,19 +27,15 @@ def register():
     username = user_details['username']
     password = user_details['password']
     hashed_password = generate_password_hash(password)
-    print(username, hashed_password)
 
     # Check if user already exists
     check_user_exists = baby_tracker_controller.check_user(username)
-    print(check_user_exists)
     if len(check_user_exists) > 0:
-        print('USER EXISTS')
         response = {'message': 'User already exists'}
         return jsonify(response)
     else:
         # If not, add user to db
         result = baby_tracker_controller.insert_user(username, hashed_password)
-        print(result)
         response = {'message': 'User added'}
         return jsonify(response)
 
@@ -69,7 +65,6 @@ def login(username, password):
 def logout():
     response = jsonify({"message": "logout successful"})
     unset_jwt_cookies(response)
-    print("logout")
     return response
 
 
@@ -79,9 +74,7 @@ def main_menu(username):
     # Get userid
     user_details = baby_tracker_controller.check_user(username)
     id = user_details[0]["id"]
-    print(id)
     children = baby_tracker_controller.check_baby_info(id)
-    print(children)
     if len(children) > 0:
         return jsonify(children)
     else:
@@ -92,7 +85,6 @@ def main_menu(username):
 @jwt_required()
 def add_baby():
     baby_details = request.get_json()
-    print(baby_details)
     name = baby_details["name"]
     dob = baby_details["dob"]
     id = baby_details["id"]
@@ -105,7 +97,6 @@ def add_baby():
 # @jwt_required()
 def add_feed():
     feed_details = request.get_json()
-    print(feed_details)
     name = feed_details["name"]
     date = feed_details["date"]
     id = feed_details["id"]
@@ -121,7 +112,6 @@ def add_feed():
 @jwt_required()
 def add_sleep():
     sleep_details = request.get_json()
-    print(sleep_details)
     name = sleep_details["name"]
     date = sleep_details["date"]
     id = sleep_details["id"]
@@ -137,7 +127,6 @@ def add_sleep():
 @jwt_required()
 def add_nappy():
     nappy_details = request.get_json()
-    print(nappy_details)
     name = nappy_details["name"]
     date = nappy_details["date"]
     id = nappy_details["id"]
@@ -155,7 +144,6 @@ def activity_history(id, baby, activity):
     user_id = int(id)
     results = baby_tracker_controller.get_activity_history(
         user_id, baby, activity)
-    print(results)
     return jsonify(results)
 
 
@@ -177,7 +165,6 @@ def after_request(response):
             if type(data) is dict:
                 data["access_token"] = access_token
                 response.data = json.dumps(data)
-                print(response)
         return response
     except (RuntimeError, KeyError):
         # Case where there is not a valid JWT. Just return the original respone

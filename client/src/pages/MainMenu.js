@@ -52,8 +52,6 @@ const MainMenu = (props) => {
         console.error(err);
       });
   }, []);
-  console.log("userDetails", userDetails);
-  console.log("children", children);
   const options = {
     add: "Add baby",
     feed: "Log feed",

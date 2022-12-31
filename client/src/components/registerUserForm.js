@@ -28,13 +28,9 @@ const RegisterUserForm = () => {
   } = useForm(INITIAL_STATE);
 
   const submittedFormData = async (data) => {
-    console.log(data);
     try {
-      //TODO FIX!!!!!!!!!!!!!!
       // Post data to DB
       await axios.post(`${BASEURL}/register`, data).then((data) => {
-        console.log(data);
-        console.log(data.message);
         if (data.data.message === "User already exists") {
           setMessage("User already exists");
         } else {

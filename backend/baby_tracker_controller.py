@@ -15,7 +15,6 @@ def check_user(username):
     db = get_db()
     cursor = db.cursor()
     cursor.row_factory = sqlite3.Row
-    print('check')
     statement = "SELECT * FROM users WHERE username = ?"
     values = cursor.execute(statement, [username]).fetchall()
     convert_data = []
@@ -41,7 +40,6 @@ def check_baby_info(id):
 def add_baby(name, dob, id):
     db = get_db()
     cursor = db.cursor()
-    print('add baby')
     statement = "INSERT INTO baby_info(baby_name, user_id, dob) VALUES (?,?,?)"
     cursor.execute(statement, [name, id, dob])
     db.commit()
@@ -51,7 +49,6 @@ def add_baby(name, dob, id):
 def log_activity(activity, name, id, date, information):
     db = get_db()
     cursor = db.cursor()
-    print('add activity')
     statement = "INSERT INTO activity(baby_name, user_id, date, activity, information) VALUES (?,?,?,?,?)"
     cursor.execute(statement, [name, id, date, activity, information])
     db.commit()
@@ -62,7 +59,6 @@ def get_activity_history(id, baby, activity):
     db = get_db()
     cursor = db.cursor()
     cursor.row_factory = sqlite3.Row
-    print('check activity')
     statement = "SELECT * FROM activity WHERE user_id = ? AND baby_name = ? AND activity = ?"
     values = cursor.execute(statement, [id, baby, activity]).fetchall()
     convert_data = []

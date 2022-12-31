@@ -41,7 +41,6 @@ function AddNappy(props) {
           },
         })
         .then((response) => {
-          console.log(response);
           const getMsg = response.data.message;
           // render success message
           setSuccessMessage(getMsg);
@@ -54,7 +53,6 @@ function AddNappy(props) {
           console.error(err);
         });
     }
-    console.log(selectedOption);
   };
 
   // Post to DB
@@ -62,7 +60,6 @@ function AddNappy(props) {
 
   //  Get date selected from child component
   const getDateVal = (data) => {
-    console.log("Date picker", dayjs(data).toISOString());
     // convert date to ISO 8601 string
     date = dayjs(data).toISOString();
   };

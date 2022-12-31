@@ -26,7 +26,6 @@ const AddBaby = (props) => {
   } = useForm();
 
   const submittedFormData = (data) => {
-    console.log(data);
     const babyDetails = {
       ...data,
       dob: dob,
@@ -39,7 +38,6 @@ const AddBaby = (props) => {
         },
       })
       .then((response) => {
-        console.log(response);
         const getMsg = response.data.message;
         setMessage(getMsg);
         setTimeout(() => {
@@ -56,7 +54,6 @@ const AddBaby = (props) => {
 
   //  Get date selected from child component
   const getDateVal = (data) => {
-    console.log("Date picker", dayjs(data).toISOString());
     // convert date to ISO 8601 string
     dob = dayjs(data).toISOString();
   };

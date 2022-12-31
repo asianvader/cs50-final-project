@@ -27,7 +27,6 @@ function AddFeed(props) {
 
   // Post to DB
   const submittedFormData = (data) => {
-    console.log(data);
     const feedDetails = {
       information: data.volume,
       id: userID,
@@ -42,7 +41,6 @@ function AddFeed(props) {
         },
       })
       .then((response) => {
-        console.log(response);
         const getMsg = response.data.message;
         // render success message
         setMessage(getMsg);
@@ -65,7 +63,6 @@ function AddFeed(props) {
 
   //  Get date selected from child component
   const getDateVal = (data) => {
-    console.log("Date picker", dayjs(data).toISOString());
     // convert date to ISO 8601 string
     date = dayjs(data).toISOString();
   };

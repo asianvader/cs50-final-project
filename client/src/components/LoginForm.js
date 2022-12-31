@@ -25,20 +25,14 @@ const LoginForm = (props) => {
   } = useForm(INITIAL_STATE);
 
   const submittedFormData = async (data) => {
-    console.log(data.username, data.password);
     try {
       // Check user in db
       const result = await axios.get(
         `${BASEURL}/login/${data.username}/${data.password}`
       );
-      console.log(result.data);
-
       // Username and password are correct
       const message = result.data;
-      console.log(message["message"] === "no username");
-      console.log(Object.keys(message));
       if (Object.keys(message)[0] === "access_token") {
-        console.log("success", result.data);
         // Add token to local storage
         props.setToken(result.data.access_token);
         // Add username to local storage
@@ -65,7 +59,6 @@ const LoginForm = (props) => {
   return (
     <Form
       onSubmit={handleSubmit((data) => {
-        console.log(data);
         submittedFormData(data);
       })}
     >

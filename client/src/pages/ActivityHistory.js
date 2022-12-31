@@ -22,7 +22,6 @@ function ActivityHistory(props) {
     setSelectedOption(activity);
 
     // Check db
-    console.log("call db");
     if (event.target.value !== "Activity") {
       data["activity"] = activity;
 
@@ -44,8 +43,6 @@ function ActivityHistory(props) {
         });
     }
   };
-
-  console.log(resultsData);
 
   return (
     <div className="page-container">

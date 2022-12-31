@@ -8,7 +8,6 @@ function ActivityTable(props) {
   const data = props.data;
   let activityInfo;
   let responses = true;
-  console.log(data);
   //   Switch statement to check what type of activity
   if (data.length > 0) {
     const activity = data[0].activity;

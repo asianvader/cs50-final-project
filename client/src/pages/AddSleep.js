@@ -26,7 +26,6 @@ function AddSleep(props) {
 
   //   Post to DB
   const submittedFormData = (data) => {
-    console.log(data);
     // convert hours to minutes
     const hours = +data.hours;
     const mins = +data.minutes;
@@ -46,7 +45,6 @@ function AddSleep(props) {
         },
       })
       .then((response) => {
-        console.log(response);
         const getMsg = response.data.message;
         // render success message
         setMessage(getMsg);
@@ -69,7 +67,6 @@ function AddSleep(props) {
 
   //  Get date selected from child component
   const getDateVal = (data) => {
-    console.log("Date picker", dayjs(data).toISOString());
     // convert date to ISO 8601 string
     date = dayjs(data).toISOString();
   };
@@ -81,7 +78,6 @@ function AddSleep(props) {
         {message && <p>{message}</p>}
         <Form
           onSubmit={handleSubmit((data) => {
-            console.log("handle", data);
             submittedFormData(data);
           })}
         >
