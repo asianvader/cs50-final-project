@@ -1,10 +1,9 @@
-import React, { useState, } from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { BASEURL } from "../constants";
 import axios from "axios";
 import { Form } from "react-bootstrap";
-
-import FeedActivityTable from "../components/FeedActivityTable";
+import ActivityTable from "../components/ActivityTable";
 
 function ActivityHistory(props) {
   const location = useLocation();
@@ -13,7 +12,7 @@ function ActivityHistory(props) {
     babyName: location.state.babyName,
     id: location.state.id,
   };
-  const activities = ["Activity", "Feed", "Sleep", "Nappies", "Weight"];
+  const activities = ["Activity", "Feed", "Sleep", "Nappies"];
   const [selectedOption, setSelectedOption] = useState("");
   const [resultsData, setResultsData] = useState([]);
 
@@ -46,23 +45,17 @@ function ActivityHistory(props) {
     }
   };
 
-  console.log(selectedOption);
+  console.log(resultsData);
 
   return (
     <div className="page-container">
-      <div className="history">
-
-      </div>
+      <div className="history"></div>
       <h2>{data.babyName}'s Activity History</h2>
       <Form>
         <Form.Group>
           <Form.Label className="mb-3" htmlFor="activities">
             Choose an option:
-            <Form.Select
-              id="activies"
-              value={selectedOption}
-              onChange={handleActivityChange}
-            >
+            <Form.Select id="activies" onChange={handleActivityChange}>
               {activities.map((activity) => (
                 <option key={activity} value={activity}>
                   {activity}
@@ -72,7 +65,7 @@ function ActivityHistory(props) {
           </Form.Label>
         </Form.Group>
       </Form>
-      {selectedOption === "feed" && <FeedActivityTable data={resultsData} />}
+      {selectedOption !== "" && <ActivityTable data={resultsData} />}
     </div>
   );
 }
