@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { constants, BASEURL } from "../constants";
 import { useForm } from "react-hook-form";
@@ -8,6 +8,7 @@ import { Button, Form } from "react-bootstrap/";
 
 const RegisterUserForm = () => {
   const navigate = useNavigate();
+  const [message, setMessage] = useState("");
   // Create an initial state for the form data
   // Can be reused to reset form
   const INITIAL_STATE = {
@@ -29,10 +30,20 @@ const RegisterUserForm = () => {
   const submittedFormData = async (data) => {
     console.log(data);
     try {
+      //TODO FIX!!!!!!!!!!!!!!
       // Post data to DB
-      await axios.post(`${BASEURL}/register`, data);
-      // Redirect user to login page
-      navigate("/login");
+      await axios.post(`${BASEURL}/register`, data).then((data) => {
+        console.log(data);
+        console.log(data.message);
+        if (data.data.message === "User already exists") {
+          setMessage("User already exists");
+        } else {
+          // Redirect user to login page
+          setTimeout(() => {
+            navigate("/login");
+          }, []);
+        }
+      });
     } catch (err) {
       console.error(err.message);
     }
@@ -51,6 +62,7 @@ const RegisterUserForm = () => {
         submittedFormData(data);
       })}
     >
+      {message && <p className="errors">{message}</p>}
       <Form.Group>
         <Form.Label className="mb-3" htmlFor="username">
           Username

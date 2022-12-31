@@ -32,8 +32,10 @@ def register():
 
     # Check if user already exists
     check_user_exists = baby_tracker_controller.check_user(username)
-    if len(check_user_exists) == 1:
-        response = {'message': 'User already exists.'}
+    print(check_user_exists)
+    if len(check_user_exists) > 0:
+        print('USER EXISTS')
+        response = {'message': 'User already exists'}
         return jsonify(response)
 
     # If not, add user to db

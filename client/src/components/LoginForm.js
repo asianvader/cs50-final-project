@@ -67,7 +67,7 @@ const LoginForm = (props) => {
         submittedFormData(data);
       })}
     >
-      {message && <p>{message}</p>}
+      {message && <p className="errors">{message}</p>}
       <Form.Group>
         <Form.Label className="mb-3" htmlFor="username">
           Username
@@ -80,11 +80,18 @@ const LoginForm = (props) => {
       </Form.Group>
 
       <Form.Group>
-      <Form.Label className="mb-3" htmlFor="password">Password</Form.Label>
-      <Form.Control type="password"{...register("password", { required: "This is required" })} />
+        <Form.Label className="mb-3" htmlFor="password">
+          Password
+        </Form.Label>
+        <Form.Control
+          type="password"
+          {...register("password", { required: "This is required" })}
+        />
         <p className="errors">{errors.password?.message}</p>
       </Form.Group>
-      <Button variant="primary" type="submit">Login</Button>
+      <Button variant="primary" type="submit">
+        Login
+      </Button>
     </Form>
   );
 };
