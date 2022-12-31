@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { format } from "date-fns";
-import { constants, BASEURL } from "../constants";
+import { BASEURL } from "../constants";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap/";
@@ -33,8 +32,10 @@ const LoginForm = (props) => {
         `${BASEURL}/login/${data.username}/${data.password}`
       );
       console.log(result.data);
+
       // Username and password are correct
       const message = result.data;
+      console.log(message["message"] === "no username");
       console.log(Object.keys(message));
       if (Object.keys(message)[0] === "access_token") {
         console.log("success", result.data);
@@ -44,9 +45,10 @@ const LoginForm = (props) => {
         sessionStorage.setItem("username", data.username);
         // Redirect to main menu
         navigate("/main-menu", { state: { username: data.username } });
+      } else if (message["message"] === "no username") {
+        setMessage("User doesn't exist. Please try again.");
       } else {
-        setMessage(result.data.message);
-        console.log(result.data.message);
+        setMessage("Wrong password, please try again.");
       }
     } catch (err) {
       console.error(err.message);

@@ -16,7 +16,6 @@ def configure():
 app = Flask(__name__)
 
 jwt_secret_key = os.getenv('JWT_SECRET_KEY')
-print(jwt_secret_key)
 app.config["JWT_SECRET_KEY"] = jwt_secret_key
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
 jwt = JWTManager(app)
@@ -37,12 +36,12 @@ def register():
         print('USER EXISTS')
         response = {'message': 'User already exists'}
         return jsonify(response)
-
-    # If not, add user to db
-    result = baby_tracker_controller.insert_user(username, hashed_password)
-    print(result)
-    response = {'message': 'User added'}
-    return jsonify(response)
+    else:
+        # If not, add user to db
+        result = baby_tracker_controller.insert_user(username, hashed_password)
+        print(result)
+        response = {'message': 'User added'}
+        return jsonify(response)
 
 
 @app.route('/login/<username>/<password>', methods=['GET'])
@@ -50,15 +49,17 @@ def login(username, password):
     # Check db
     result = baby_tracker_controller.check_user(username)
     # Ensure username exists and password is correct
-    if len(result) != 1 or not check_password_hash(result[0]["hash"], password):
+    if len(result) != 1:
         response = {
-            'message': "User doesn't exist or password isn't correct. Please try again."}
+            'message': "no username"}
         return jsonify(response)
-
+    elif not check_password_hash(result[0]["hash"], password):
+        response = {
+            'message': "wrong password"}
+        return jsonify(response)
     else:
         # Create access token
         access_token = create_access_token(identity=username)
-
         # Return token to the client
         response = {"access_token": access_token}
         return jsonify(response)
