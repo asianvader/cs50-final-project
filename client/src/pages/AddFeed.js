@@ -56,7 +56,7 @@ function AddFeed(props) {
       });
   };
 
-  // Reset input fields if forms has been submitted
+  // Reset input fields if form has been submitted
   useEffect(() => {
     if (formState.isSubmitSuccessful) {
       reset();

@@ -57,6 +57,7 @@ def log_activity(activity, name, id, date, information):
     db.commit()
     return True
 
+
 def get_activity_history(id, baby, activity):
     db = get_db()
     cursor = db.cursor()
@@ -69,4 +70,3 @@ def get_activity_history(id, baby, activity):
     for item in values:
         convert_data.append({k: item[k] for k in item.keys()})
     return convert_data
-

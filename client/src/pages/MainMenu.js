@@ -99,7 +99,15 @@ const MainMenu = (props) => {
     });
   }
 
-  function addNappy() {}
+  function addNappyHandler() {
+    navigate("/add-nappy", {
+      state: {
+        id: userDetails.id,
+        username: username,
+        babyName: children[0].baby_name,
+      },
+    });
+  }
 
   function addWeight() {}
 
@@ -111,7 +119,7 @@ const MainMenu = (props) => {
         <>
           <Button onClick={addFeedHandler}>{options.feed}</Button>
           <Button onClick={addSleepHandler}>{options.sleep}</Button>
-          <Button onClick={addNappy}>{options.nappy}</Button>
+          <Button onClick={addNappyHandler}>{options.nappy}</Button>
           <Button onClick={addWeight}>{options.weight}</Button>
           <Button onClick={activityHistoryHandler}>
             {options["activity-history"]}

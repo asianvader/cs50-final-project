@@ -116,6 +116,7 @@ def add_feed():
     if feed:
         return jsonify({'message': 'Successfully added feed'})
 
+
 @app.route("/add-sleep", methods=["POST"])
 @jwt_required()
 def add_sleep():
@@ -130,6 +131,22 @@ def add_sleep():
         activity, name, id, date, information)
     if sleep:
         return jsonify({'message': 'Successfully added sleep'})
+
+
+@app.route("/add-nappy", methods=["POST"])
+@jwt_required()
+def add_nappy():
+    nappy_details = request.get_json()
+    print(nappy_details)
+    name = nappy_details["name"]
+    date = nappy_details["date"]
+    id = nappy_details["id"]
+    activity = nappy_details["activity"]
+    information = nappy_details["information"]
+    nappy = baby_tracker_controller.log_activity(
+        activity, name, id, date, information)
+    if nappy:
+        return jsonify({'message': 'Successfully added nappy'})
 
 
 @app.route("/activity-history/<id>/<baby>/<activity>", methods=["GET"])

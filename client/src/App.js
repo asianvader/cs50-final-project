@@ -10,6 +10,7 @@ import AddFeed from "./pages/AddFeed";
 import ActivityHistory from "./pages/ActivityHistory";
 import Home from "./pages/Home";
 import AddSleep from "./pages/AddSleep";
+import AddNappy from "./pages/AddNappy";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from "react-bootstrap/Button";
 import './App.scss';
@@ -32,6 +33,7 @@ const App = () => {
         <Route path="/add-baby" element={<AddBaby token={token}/>}/>
         <Route path="/add-feed" element={<AddFeed token={token}/>}/>
         <Route path="/add-sleep" element={<AddSleep token={token}/>}/>
+        <Route path="/add-nappy" element={<AddNappy token={token}/>}/>
         <Route path="/activity-history" element={<ActivityHistory token={token}/>}/>
 
       </Routes>
